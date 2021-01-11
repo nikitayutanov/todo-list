@@ -1,0 +1,28 @@
+.form-section {
+  margin-bottom: 1rem;
+}
+
+.form {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.form__input {
+  width: 100%;
+  padding: 0.75rem 0.5rem;
+  font-size: inherit;
+  border: none;
+  background-color: #f8f9fa;
+}
+
+.form__button {
+  padding: 0.75rem;
+  font-size: inherit;
+  background-color: #ddd;
+  border: none;
+}
+
+.form__button:hover {
+  background-color: #ccc;
+}

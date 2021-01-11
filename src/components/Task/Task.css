@@ -1,0 +1,61 @@
+.task {
+  padding: 0.75rem 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  border-bottom: 1px solid #ccc;
+}
+
+.task__text-wrapper {
+  width: 100%;
+  overflow-wrap: anywhere;
+}
+
+.task__text {
+  margin: 0 1rem;
+}
+
+.task__buttons {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.task__button {
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  position: relative;
+  background-color: #ddd;
+  border: none;
+}
+
+.task__button:hover {
+  background-color: #ccc;
+}
+
+.task__button::before {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translateX(-50%) translateY(-50%);
+  transform: translateX(-50%) translateY(-50%);
+}
+
+.task__button--edit {
+  margin-right: 0.75rem;
+}
+
+.task__button--edit::before {
+  content: "E";
+}
+
+.task__button--delete::before {
+  content: "D";
+}
