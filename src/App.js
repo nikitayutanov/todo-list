@@ -2,7 +2,7 @@ import Todo from './components/Todo';
 
 function App() {
   return (
-    <div class="container">
+    <div className="container">
       <Todo />
     </div>
   );

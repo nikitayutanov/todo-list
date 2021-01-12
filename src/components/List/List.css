@@ -1,3 +1,8 @@
 .tasks-section {
   padding: 1.5rem 1rem;
 }
+
+.empty-message {
+  text-align: center;
+  font-style: italic;
+}

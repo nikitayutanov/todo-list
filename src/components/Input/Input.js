@@ -1,11 +1,17 @@
 import './Input.css';
 
-function Input() {
+function Input({ value, onChange, onSubmit }) {
   return (
-    <section class="form-section">
-      <form class="form">
-        <input type="text" class="form__input" />
-        <input type="submit" class="form__button" value="ADD" />
+    <section className="form-section">
+      <form className="form" onSubmit={onSubmit}>
+        <input
+          type="text"
+          className="form__input"
+          value={value}
+          onChange={onChange}
+          autoFocus
+        />
+        <input type="submit" className="form__button" value="ADD" />
       </form>
     </section>
   );
