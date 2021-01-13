@@ -21,6 +21,10 @@
   margin: 0 1rem;
 }
 
+.task--completed .task__text {
+  text-decoration: line-through;
+}
+
 .task__buttons {
   display: -webkit-box;
   display: -ms-flexbox;

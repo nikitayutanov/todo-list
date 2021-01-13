@@ -19,11 +19,22 @@ function Todo() {
       const task = {
         text: inputText,
         id: Date.now(),
+        isCompleted: false,
       };
 
       setTasks((prevTasks) => [...prevTasks, ...[task]]);
       setInputText('');
     }
+  };
+
+  const toggleTaskCompletion = (task) => {
+    setTasks((prevTasks) =>
+      prevTasks.map((prevTask) =>
+        prevTask.id === task.id
+          ? { ...task, isCompleted: !task.isCompleted }
+          : prevTask
+      )
+    );
   };
 
   return (
@@ -34,7 +45,7 @@ function Todo() {
         onChange={handleInputChange}
         onSubmit={addTask}
       />
-      <List tasks={tasks} />
+      <List tasks={tasks} onChange={toggleTaskCompletion} />
     </div>
   );
 }
