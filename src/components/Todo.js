@@ -27,6 +27,12 @@ function Todo() {
     }
   };
 
+  const removeTask = (task) => {
+    setTasks((prevTasks) =>
+      prevTasks.filter((prevTask) => prevTask.id !== task.id)
+    );
+  };
+
   const toggleTaskCompletion = (task) => {
     setTasks((prevTasks) =>
       prevTasks.map((prevTask) =>
@@ -45,7 +51,11 @@ function Todo() {
         onChange={handleInputChange}
         onSubmit={addTask}
       />
-      <List tasks={tasks} onChange={toggleTaskCompletion} />
+      <List
+        tasks={tasks}
+        onChange={toggleTaskCompletion}
+        onClick={removeTask}
+      />
     </div>
   );
 }

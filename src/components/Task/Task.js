@@ -1,6 +1,6 @@
 import './Task.css';
 
-function Task({ task, onChange }) {
+function Task({ task, onChange, onClick }) {
   return (
     <div className={task.isCompleted ? 'task task--completed' : 'task'}>
       <input
@@ -13,7 +13,10 @@ function Task({ task, onChange }) {
       </div>
       <div className="task__buttons">
         <button className="task__button task__button--edit"></button>
-        <button className="task__button task__button--delete"></button>
+        <button
+          className="task__button task__button--delete"
+          onClick={() => onClick(task)}
+        ></button>
       </div>
     </div>
   );
