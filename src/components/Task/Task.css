@@ -14,15 +14,33 @@
 
 .task__text-wrapper {
   width: 100%;
+  margin: 0 1rem;
   overflow-wrap: anywhere;
 }
 
-.task__text {
-  margin: 0 1rem;
+.task--completed .task__text-wrapper {
+  text-decoration: line-through;
 }
 
-.task--completed .task__text {
-  text-decoration: line-through;
+.task__text {
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  display: block;
+  overflow-y: hidden;
+  font: inherit;
+  resize: none;
+  background-color: #eee;
+  border: none;
+}
+
+.task__text:focus {
+  outline: none;
+}
+
+.task__text[readonly] {
+  cursor: default;
+  background: inherit;
 }
 
 .task__buttons {

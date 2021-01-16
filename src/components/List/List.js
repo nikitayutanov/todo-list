@@ -1,16 +1,26 @@
 import './List.css';
 import Task from '../Task/Task';
 
-function List({ tasks, onChange, onClick }) {
+function List({
+  tasks,
+  textareaText,
+  handleTextareaChange,
+  toggleTaskCompletion,
+  toggleTaskEditing,
+  removeTask,
+}) {
   return (
     <section className="tasks-section">
       {tasks.length ? (
         tasks.map((task) => (
           <Task
-            task={task}
             key={task.id}
-            onChange={onChange}
-            onClick={onClick}
+            task={task}
+            textareaText={textareaText}
+            handleTextareaChange={handleTextareaChange}
+            toggleTaskCompletion={toggleTaskCompletion}
+            toggleTaskEditing={toggleTaskEditing}
+            removeTask={removeTask}
           />
         ))
       ) : (
