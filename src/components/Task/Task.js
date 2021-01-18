@@ -1,14 +1,9 @@
 import './Task.css';
-import { useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
-function Task({
-  task,
-  textareaText,
-  handleTextareaChange,
-  toggleTaskCompletion,
-  toggleTaskEditing,
-  removeTask,
-}) {
+function Task(props) {
+  const { task, toggleTaskCompletion, toggleTaskEditing, removeTask } = props;
+  const [textareaText, setTextareaText] = useState('');
   const textareaRef = useRef(null);
 
   const resizeTextarea = () => {
@@ -22,10 +17,20 @@ function Task({
     textareaRef.current.setSelectionRange(pos, pos);
   };
 
+  const handleTextareaChange = ({ target: { value } }) => {
+    setTextareaText(value);
+    resizeTextarea();
+  };
+
+  const handleEditButtonClick = () => {
+    toggleTaskEditing(task, textareaText, setTextareaText);
+    focusTextarea();
+  };
+
   useEffect(resizeTextarea, []);
 
   return (
-    <div className={task.isCompleted ? 'task task--completed' : 'task'}>
+    <li className={task.isCompleted ? 'task task--completed' : 'task'}>
       <input
         type="checkbox"
         className="task__checkbox"
@@ -39,20 +44,14 @@ function Task({
           className="task__text"
           value={task.isEditing ? textareaText : task.text}
           ref={textareaRef}
-          onChange={(e) => {
-            handleTextareaChange(e);
-            resizeTextarea();
-          }}
+          onChange={handleTextareaChange}
           readOnly={!task.isEditing}
         ></textarea>
       </div>
       <div className="task__buttons">
         <button
           className="task__button task__button--edit"
-          onClick={() => {
-            toggleTaskEditing(task);
-            focusTextarea();
-          }}
+          onClick={handleEditButtonClick}
           disabled={task.isCompleted}
         ></button>
         <button
@@ -60,7 +59,7 @@ function Task({
           onClick={() => removeTask(task)}
         ></button>
       </div>
-    </div>
+    </li>
   );
 }
 

@@ -1,31 +1,26 @@
 import './List.css';
 import Task from '../Task/Task';
 
-function List({
-  tasks,
-  textareaText,
-  handleTextareaChange,
-  toggleTaskCompletion,
-  toggleTaskEditing,
-  removeTask,
-}) {
+function List(props) {
+  const { tasks, toggleTaskCompletion, toggleTaskEditing, removeTask } = props;
+
   return (
     <section className="tasks-section">
-      {tasks.length ? (
-        tasks.map((task) => (
-          <Task
-            key={task.id}
-            task={task}
-            textareaText={textareaText}
-            handleTextareaChange={handleTextareaChange}
-            toggleTaskCompletion={toggleTaskCompletion}
-            toggleTaskEditing={toggleTaskEditing}
-            removeTask={removeTask}
-          />
-        ))
-      ) : (
-        <p className="empty-message">You don't have any tasks atm.</p>
-      )}
+      <ul className="tasks">
+        {tasks.length ? (
+          tasks.map((task) => (
+            <Task
+              key={task.id}
+              task={task}
+              toggleTaskCompletion={toggleTaskCompletion}
+              toggleTaskEditing={toggleTaskEditing}
+              removeTask={removeTask}
+            />
+          ))
+        ) : (
+          <p className="empty-message">You don't have any tasks atm.</p>
+        )}
+      </ul>
     </section>
   );
 }

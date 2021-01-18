@@ -1,14 +1,25 @@
 import './Input.css';
+import { useState } from 'react';
 
-function Input({ value, onChange, onSubmit }) {
+function Input(props) {
+  const { onSubmit } = props;
+  const [inputText, setInputText] = useState('');
+
+  const handleInputChange = ({ target: { value } }) => {
+    setInputText(value);
+  };
+
   return (
     <section className="form-section">
-      <form className="form" onSubmit={onSubmit}>
+      <form
+        className="form"
+        onSubmit={(e) => onSubmit(e, inputText, setInputText)}
+      >
         <input
           type="text"
           className="form__input"
-          value={value}
-          onChange={onChange}
+          value={inputText}
+          onChange={handleInputChange}
           autoFocus
         />
         <input type="submit" className="form__button" value="ADD" />

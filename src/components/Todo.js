@@ -5,24 +5,13 @@ import Input from './Input/Input';
 import List from './List/List';
 
 function Todo() {
-  const [inputText, setInputText] = useState('');
-  const [textareaText, setTextareaText] = useState('');
   const [tasks, setTasks] = useState([]);
-
   const isAnyTaskEditing = useRef(false);
 
-  const handleInputChange = ({ target: { value } }) => {
-    setInputText(value);
-  };
-
-  const handleTextareaChange = ({ target: { value } }) => {
-    setTextareaText(value);
-  };
-
-  const addTask = (e) => {
+  const addTask = (e, inputText, setInputText) => {
     e.preventDefault();
 
-    if (inputText) {
+    if (inputText.trim()) {
       const task = {
         text: inputText,
         id: Date.now(),
@@ -65,7 +54,7 @@ function Todo() {
     isAnyTaskEditing.current = true;
   };
 
-  const changeTask = (task) => {
+  const changeTask = (task, textareaText) => {
     setTasks((prevTasks) =>
       prevTasks.map((prevTask) =>
         prevTask.id === task.id
@@ -77,12 +66,12 @@ function Todo() {
     isAnyTaskEditing.current = false;
   };
 
-  const toggleTaskEditing = (task) => {
+  const toggleTaskEditing = (task, textareaText, setTextareaText) => {
     if (!task.isEditing && !isAnyTaskEditing.current) {
       setTextareaText(task.text);
       editTask(task);
     } else if (task.isEditing && isAnyTaskEditing.current) {
-      changeTask(task);
+      changeTask(task, textareaText);
       setTextareaText('');
     }
   };
@@ -90,15 +79,9 @@ function Todo() {
   return (
     <div className="todo">
       <Heading />
-      <Input
-        value={inputText}
-        onChange={handleInputChange}
-        onSubmit={addTask}
-      />
+      <Input onSubmit={addTask} />
       <List
         tasks={tasks}
-        textareaText={textareaText}
-        handleTextareaChange={handleTextareaChange}
         toggleTaskCompletion={toggleTaskCompletion}
         toggleTaskEditing={toggleTaskEditing}
         removeTask={removeTask}
