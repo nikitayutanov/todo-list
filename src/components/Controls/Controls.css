@@ -1,0 +1,48 @@
+.controls {
+  padding: 0.75rem 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  font-size: 0.65rem;
+}
+
+.clear-button {
+  padding: 0.25rem 0.5rem;
+  font: inherit;
+  background-color: #ddd;
+  border: 0;
+}
+
+.clear-button:hover {
+  background-color: #ccc;
+}
+
+.filter-buttons {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  text-transform: capitalize;
+}
+
+.filter-button {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.filter-button:not(:last-child) {
+  margin-right: 1rem;
+}
+
+.filter-button__radio {
+  margin-left: 0.25rem;
+}
