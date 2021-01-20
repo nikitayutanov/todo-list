@@ -1,8 +1,13 @@
 import './Controls.css';
 import { useState } from 'react';
 
-function Controls() {
+function Controls(props) {
+  const { setCurrentFilter } = props;
   const [filterButtons, ,] = useState(['all', 'active', 'done']);
+
+  const handleFilterButtonClick = ({ target: { value } }) => {
+    setCurrentFilter(value);
+  };
 
   return (
     <section className="controls">
@@ -23,6 +28,7 @@ function Controls() {
               id={`filter-button--${filterButton}`}
               value={filterButton}
               defaultChecked={index === 0 ? true : false}
+              onChange={handleFilterButtonClick}
             />
           </div>
         ))}
