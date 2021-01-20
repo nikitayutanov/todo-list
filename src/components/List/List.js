@@ -5,6 +5,7 @@ import Controls from '../Controls/Controls';
 
 function List(props) {
   const { tasks, toggleTaskCompletion, toggleTaskEditing, removeTask } = props;
+  const [textareaText, setTextareaText] = useState('');
   const [currentFilter, setCurrentFilter] = useState('all');
 
   const getTasks = () => {
@@ -30,6 +31,8 @@ function List(props) {
                 toggleTaskCompletion={toggleTaskCompletion}
                 toggleTaskEditing={toggleTaskEditing}
                 removeTask={removeTask}
+                textareaText={textareaText}
+                setTextareaText={setTextareaText}
               />
             ))}
           </ul>

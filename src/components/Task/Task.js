@@ -2,8 +2,14 @@ import './Task.css';
 import { useState, useEffect, useRef } from 'react';
 
 function Task(props) {
-  const { task, toggleTaskCompletion, toggleTaskEditing, removeTask } = props;
-  const [textareaText, setTextareaText] = useState('');
+  const {
+    task,
+    toggleTaskCompletion,
+    toggleTaskEditing,
+    removeTask,
+    textareaText,
+    setTextareaText,
+  } = props;
   const textareaRef = useRef(null);
 
   const resizeTextarea = () => {
