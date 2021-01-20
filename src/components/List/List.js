@@ -19,27 +19,47 @@ function List(props) {
     }
   };
 
+  const getEmptyMessage = () => {
+    switch (currentFilter) {
+      case 'active':
+        return "There's no active tasks.";
+      case 'done':
+        return "There's no completed tasks.";
+      default:
+        return 'Oops..';
+    }
+  };
+
+  const visibleTasks = getTasks();
+  const emptyMessage = getEmptyMessage();
+
   return (
     <section className="tasks-section">
       {tasks.length ? (
         <Fragment>
-          <ul className="tasks">
-            {getTasks().map((task) => (
-              <Task
-                key={task.id}
-                task={task}
-                toggleTaskCompletion={toggleTaskCompletion}
-                toggleTaskEditing={toggleTaskEditing}
-                removeTask={removeTask}
-                textareaText={textareaText}
-                setTextareaText={setTextareaText}
-              />
-            ))}
-          </ul>
+          {visibleTasks.length ? (
+            <ul className="tasks">
+              {visibleTasks.map((task) => (
+                <Task
+                  key={task.id}
+                  task={task}
+                  toggleTaskCompletion={toggleTaskCompletion}
+                  toggleTaskEditing={toggleTaskEditing}
+                  removeTask={removeTask}
+                  textareaText={textareaText}
+                  setTextareaText={setTextareaText}
+                />
+              ))}
+            </ul>
+          ) : (
+            <p className="empty-message">{emptyMessage}</p>
+          )}
           <Controls setCurrentFilter={setCurrentFilter} />
         </Fragment>
       ) : (
-        <p className="empty-message">You don't have any tasks atm.</p>
+        <p className="empty-message empty-message--main">
+          You don't have any tasks atm.
+        </p>
       )}
     </section>
   );
