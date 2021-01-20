@@ -55,15 +55,17 @@ function Todo() {
   };
 
   const changeTask = (task, textareaText) => {
-    setTasks((prevTasks) =>
-      prevTasks.map((prevTask) =>
-        prevTask.id === task.id
-          ? { ...task, text: textareaText, isEditing: false }
-          : prevTask
-      )
-    );
+    if (textareaText.trim()) {
+      setTasks((prevTasks) =>
+        prevTasks.map((prevTask) =>
+          prevTask.id === task.id
+            ? { ...task, text: textareaText, isEditing: false }
+            : prevTask
+        )
+      );
 
-    isAnyTaskEditing.current = false;
+      isAnyTaskEditing.current = false;
+    }
   };
 
   const toggleTaskEditing = (task, textareaText, setTextareaText) => {
