@@ -2,7 +2,7 @@ import './Controls.css';
 import { useState } from 'react';
 
 function Controls(props) {
-  const { setCurrentFilter } = props;
+  const { setCurrentFilter, clearTasks } = props;
   const [filterButtons, ,] = useState(['all', 'active', 'done']);
 
   const handleFilterButtonClick = ({ target: { value } }) => {
@@ -11,7 +11,9 @@ function Controls(props) {
 
   return (
     <section className="controls">
-      <button className="clear-button">Clear</button>
+      <button className="clear-button" onClick={clearTasks}>
+        Clear
+      </button>
       <div className="filter-buttons">
         {filterButtons.map((filterButton, index) => (
           <div className="filter-button" key={index}>

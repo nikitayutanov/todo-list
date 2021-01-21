@@ -78,6 +78,14 @@ function Todo() {
     }
   };
 
+  const clearTasks = () => {
+    setTasks([]);
+
+    if (isAnyTaskEditing.current) {
+      isAnyTaskEditing.current = false;
+    }
+  };
+
   return (
     <div className="todo">
       <Heading />
@@ -87,6 +95,7 @@ function Todo() {
         toggleTaskCompletion={toggleTaskCompletion}
         toggleTaskEditing={toggleTaskEditing}
         removeTask={removeTask}
+        clearTasks={clearTasks}
       />
     </div>
   );

@@ -4,7 +4,13 @@ import Task from '../Task/Task';
 import Controls from '../Controls/Controls';
 
 function List(props) {
-  const { tasks, toggleTaskCompletion, toggleTaskEditing, removeTask } = props;
+  const {
+    tasks,
+    toggleTaskCompletion,
+    toggleTaskEditing,
+    removeTask,
+    clearTasks,
+  } = props;
   const [textareaText, setTextareaText] = useState('');
   const [currentFilter, setCurrentFilter] = useState('all');
 
@@ -54,7 +60,10 @@ function List(props) {
           ) : (
             <p className="empty-message">{emptyMessage}</p>
           )}
-          <Controls setCurrentFilter={setCurrentFilter} />
+          <Controls
+            setCurrentFilter={setCurrentFilter}
+            clearTasks={clearTasks}
+          />
         </Fragment>
       ) : (
         <p className="empty-message empty-message--main">
