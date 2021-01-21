@@ -90,13 +90,21 @@ function Todo() {
     <div className="todo">
       <Heading />
       <Input onSubmit={addTask} />
-      <List
-        tasks={tasks}
-        toggleTaskCompletion={toggleTaskCompletion}
-        toggleTaskEditing={toggleTaskEditing}
-        removeTask={removeTask}
-        clearTasks={clearTasks}
-      />
+      <section className="tasks-section">
+        {tasks.length ? (
+          <List
+            tasks={tasks}
+            toggleTaskCompletion={toggleTaskCompletion}
+            toggleTaskEditing={toggleTaskEditing}
+            removeTask={removeTask}
+            clearTasks={clearTasks}
+          />
+        ) : (
+          <p className="empty-message empty-message--main">
+            You don't have any tasks atm.
+          </p>
+        )}
+      </section>
     </div>
   );
 }

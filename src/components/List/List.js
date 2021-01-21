@@ -40,37 +40,26 @@ function List(props) {
   const emptyMessage = getEmptyMessage();
 
   return (
-    <section className="tasks-section">
-      {tasks.length ? (
-        <Fragment>
-          {visibleTasks.length ? (
-            <ul className="tasks">
-              {visibleTasks.map((task) => (
-                <Task
-                  key={task.id}
-                  task={task}
-                  toggleTaskCompletion={toggleTaskCompletion}
-                  toggleTaskEditing={toggleTaskEditing}
-                  removeTask={removeTask}
-                  textareaText={textareaText}
-                  setTextareaText={setTextareaText}
-                />
-              ))}
-            </ul>
-          ) : (
-            <p className="empty-message">{emptyMessage}</p>
-          )}
-          <Controls
-            setCurrentFilter={setCurrentFilter}
-            clearTasks={clearTasks}
-          />
-        </Fragment>
+    <Fragment>
+      {visibleTasks.length ? (
+        <ul className="tasks">
+          {visibleTasks.map((task) => (
+            <Task
+              key={task.id}
+              task={task}
+              toggleTaskCompletion={toggleTaskCompletion}
+              toggleTaskEditing={toggleTaskEditing}
+              removeTask={removeTask}
+              textareaText={textareaText}
+              setTextareaText={setTextareaText}
+            />
+          ))}
+        </ul>
       ) : (
-        <p className="empty-message empty-message--main">
-          You don't have any tasks atm.
-        </p>
+        <p className="empty-message">{emptyMessage}</p>
       )}
-    </section>
+      <Controls setCurrentFilter={setCurrentFilter} clearTasks={clearTasks} />
+    </Fragment>
   );
 }
 
