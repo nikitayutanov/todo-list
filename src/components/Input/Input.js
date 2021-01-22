@@ -24,6 +24,21 @@ function Input(props) {
         />
         <input type="submit" className="form__button" value="ADD" />
       </form>
+      <div class="form-switch">
+        <input
+          type="radio"
+          name="form-switch-buttons"
+          class="form-switch__button"
+          id="form-switch__button--add"
+          defaultChecked
+        />
+        <input
+          type="radio"
+          name="form-switch-buttons"
+          class="form-switch__button"
+          id="form-switch__button--search"
+        />
+      </div>
     </section>
   );
 }
