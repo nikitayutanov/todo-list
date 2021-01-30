@@ -8,20 +8,15 @@ function Todo() {
   const [tasks, setTasks] = useState([]);
   const isAnyTaskEditing = useRef(false);
 
-  const addTask = (e, inputText, setInputText) => {
-    e.preventDefault();
+  const addTask = (inputText) => {
+    const task = {
+      text: inputText,
+      id: Date.now(),
+      isCompleted: false,
+      isEditing: false,
+    };
 
-    if (inputText.trim()) {
-      const task = {
-        text: inputText,
-        id: Date.now(),
-        isCompleted: false,
-        isEditing: false,
-      };
-
-      setTasks((prevTasks) => [...prevTasks, ...[task]]);
-      setInputText('');
-    }
+    setTasks((prevTasks) => [...prevTasks, ...[task]]);
   };
 
   const removeTask = (task) => {
@@ -86,10 +81,14 @@ function Todo() {
     }
   };
 
+  const searchTasks = () => {
+    console.log('search tasks');
+  };
+
   return (
     <div className="todo">
       <Heading />
-      <Input onSubmit={addTask} />
+      <Input addTask={addTask} searchTasks={searchTasks} />
       <section className="tasks-section">
         {tasks.length ? (
           <List

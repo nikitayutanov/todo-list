@@ -2,18 +2,49 @@ import './Input.css';
 import { useState } from 'react';
 
 function Input(props) {
-  const { onSubmit } = props;
+  const { addTask, searchTasks } = props;
   const [inputText, setInputText] = useState('');
+  const [inputMode, setInputMode] = useState('add');
 
   const handleInputChange = ({ target: { value } }) => {
     setInputText(value);
+  };
+
+  const handleInputModeChange = ({ target: { value } }) => {
+    switch (value) {
+      case 'add':
+        setInputMode(value);
+        break;
+      case 'search':
+        setInputMode(value);
+        break;
+      default:
+    }
+  };
+
+  const handleButtonClick = (e) => {
+    e.preventDefault();
+
+    if (inputText.trim()) {
+      switch (inputMode) {
+        case 'add':
+          addTask(inputText);
+          break;
+        case 'search':
+          searchTasks(inputText);
+          break;
+        default:
+      }
+      
+      setInputText('');
+    }
   };
 
   return (
     <section className="form-section">
       <form
         className="form"
-        onSubmit={(e) => onSubmit(e, inputText, setInputText)}
+        onSubmit={handleButtonClick}
       >
         <input
           type="text"
@@ -22,21 +53,23 @@ function Input(props) {
           onChange={handleInputChange}
           autoFocus
         />
-        <input type="submit" className="form__button" value="ADD" />
+        <input type="submit" className="form__button" value={inputMode} />
       </form>
-      <div class="form-switch">
+      <div className="form-switch" onChange={handleInputModeChange}>
         <input
           type="radio"
           name="form-switch-buttons"
-          class="form-switch__button"
+          className="form-switch__button"
           id="form-switch__button--add"
+          value="add"
           defaultChecked
         />
         <input
           type="radio"
           name="form-switch-buttons"
-          class="form-switch__button"
+          className="form-switch__button"
           id="form-switch__button--search"
+          value="search"
         />
       </div>
     </section>
