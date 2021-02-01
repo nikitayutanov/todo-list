@@ -6,7 +6,9 @@ import List from './List/List';
 
 function Todo() {
   const [tasks, setTasks] = useState([]);
+  const [visibleTasks, setVisibleTasks] = useState(tasks);
   const isAnyTaskEditing = useRef(false);
+  const searchQuery = useRef('');
 
   const addTask = (inputText) => {
     const task = {
@@ -81,8 +83,20 @@ function Todo() {
     }
   };
 
-  const searchTasks = () => {
-    console.log('search tasks');
+  const searchTasks = (inputText) => {
+    const getMatchingTasks = (tasks) => {
+      return tasks.filter((task) => task.text.includes(inputText));
+    };
+
+    if (tasks.length) {
+      setVisibleTasks(() =>
+        visibleTasks.length
+          ? getMatchingTasks(visibleTasks)
+          : getMatchingTasks(tasks)
+      );
+
+      searchQuery.current = inputText;
+    }
   };
 
   return (
@@ -93,10 +107,14 @@ function Todo() {
         {tasks.length ? (
           <List
             tasks={tasks}
+            setTasks={setTasks}
+            visibleTasks={visibleTasks}
+            setVisibleTasks={setVisibleTasks}
             toggleTaskCompletion={toggleTaskCompletion}
             toggleTaskEditing={toggleTaskEditing}
             removeTask={removeTask}
             clearTasks={clearTasks}
+            searchQuery={searchQuery}
           />
         ) : (
           <p className="empty-message empty-message--main">

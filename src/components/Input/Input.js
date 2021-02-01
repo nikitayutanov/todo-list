@@ -11,15 +11,7 @@ function Input(props) {
   };
 
   const handleInputModeChange = ({ target: { value } }) => {
-    switch (value) {
-      case 'add':
-        setInputMode(value);
-        break;
-      case 'search':
-        setInputMode(value);
-        break;
-      default:
-    }
+    setInputMode(value);
   };
 
   const handleButtonClick = (e) => {
@@ -29,14 +21,13 @@ function Input(props) {
       switch (inputMode) {
         case 'add':
           addTask(inputText);
+          setInputText('');
           break;
         case 'search':
           searchTasks(inputText);
           break;
         default:
       }
-      
-      setInputText('');
     }
   };
 

@@ -1,27 +1,56 @@
 import './List.css';
-import { Fragment, useState } from 'react';
+import { Fragment, useState, useLayoutEffect } from 'react';
 import Task from '../Task/Task';
 import Controls from '../Controls/Controls';
 
 function List(props) {
   const {
     tasks,
+    visibleTasks,
+    setVisibleTasks,
     toggleTaskCompletion,
     toggleTaskEditing,
     removeTask,
     clearTasks,
+    searchQuery,
   } = props;
   const [textareaText, setTextareaText] = useState('');
   const [currentFilter, setCurrentFilter] = useState('all');
 
-  const getTasks = () => {
+  const addTasksToVisible = () => {
+    const addAllTasksToVisible = () => {
+      setVisibleTasks(tasks);
+    };
+
+    const addActiveTasksToVisible = () => {
+      setVisibleTasks(tasks.filter((task) => !task.isCompleted));
+    };
+
+    const addCompletedTasksToVisible = () => {
+      setVisibleTasks(tasks.filter((task) => task.isCompleted));
+    };
+
+    const matchVisibleTasksToSearch = () => {
+      setVisibleTasks((prevTasks) =>
+        prevTasks.filter((prevTask) =>
+          prevTask.text.includes(searchQuery.current)
+        )
+      );
+    };
+
     switch (currentFilter) {
       case 'active':
-        return tasks.filter((task) => !task.isCompleted);
+        addActiveTasksToVisible();
+        break;
       case 'done':
-        return tasks.filter((task) => task.isCompleted);
+        addCompletedTasksToVisible();
+        break;
       default:
-        return tasks;
+        addAllTasksToVisible();
+    }
+
+    if (searchQuery.current) {
+      matchVisibleTasksToSearch();
     }
   };
 
@@ -36,7 +65,7 @@ function List(props) {
     }
   };
 
-  const visibleTasks = getTasks();
+  useLayoutEffect(addTasksToVisible, [tasks, currentFilter]);
   const emptyMessage = getEmptyMessage();
 
   return (
