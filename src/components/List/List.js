@@ -66,7 +66,6 @@ function List(props) {
   };
 
   useLayoutEffect(addTasksToVisible, [tasks, currentFilter]);
-  const emptyMessage = getEmptyMessage();
 
   return (
     <Fragment>
@@ -85,7 +84,7 @@ function List(props) {
           ))}
         </ul>
       ) : (
-        <p className="empty-message">{emptyMessage}</p>
+        <p className="empty-message">{getEmptyMessage()}</p>
       )}
       <Controls
         setCurrentFilter={setCurrentFilter}

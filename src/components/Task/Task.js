@@ -1,5 +1,5 @@
 import './Task.css';
-import { useEffect, useRef } from 'react';
+import { useLayoutEffect, useRef } from 'react';
 
 function Task(props) {
   const {
@@ -33,7 +33,7 @@ function Task(props) {
     focusTextarea();
   };
 
-  useEffect(resizeTextarea, []);
+  useLayoutEffect(resizeTextarea, []);
 
   return (
     <li className={task.isCompleted ? 'task task--completed' : 'task'}>
