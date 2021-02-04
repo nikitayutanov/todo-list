@@ -10,6 +10,12 @@ function Todo() {
   const isAnyTaskEditing = useRef(false);
   const searchQuery = useRef('');
 
+  const clearCurrentSearch = () => {
+    if (searchQuery.current) {
+      searchQuery.current = '';
+    }
+  };
+
   const addTask = (inputText) => {
     const task = {
       text: inputText,
@@ -18,6 +24,7 @@ function Todo() {
       isEditing: false,
     };
 
+    clearCurrentSearch();
     setTasks((prevTasks) => [...prevTasks, ...[task]]);
   };
 
@@ -83,16 +90,16 @@ function Todo() {
     }
   };
 
-  const searchTasks = (inputText) => {
-    const getMatchingTasks = (tasks) => {
-      return tasks.filter((task) => task.text.includes(inputText));
-    };
+  const getMatchingTasks = (tasks, searchQuery) => {
+    return tasks.filter((task) => task.text.includes(searchQuery));
+  };
 
+  const searchTasks = (inputText) => {
     if (tasks.length) {
       setVisibleTasks(() =>
         visibleTasks.length
-          ? getMatchingTasks(visibleTasks)
-          : getMatchingTasks(tasks)
+          ? getMatchingTasks(visibleTasks, inputText)
+          : getMatchingTasks(tasks, inputText)
       );
 
       searchQuery.current = inputText;
@@ -114,6 +121,8 @@ function Todo() {
             toggleTaskEditing={toggleTaskEditing}
             removeTask={removeTask}
             clearTasks={clearTasks}
+            getMatchingTasks={getMatchingTasks}
+            clearCurrentSearch={clearCurrentSearch}
             searchQuery={searchQuery}
           />
         ) : (

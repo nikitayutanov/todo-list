@@ -2,10 +2,11 @@ import './Controls.css';
 import { useState } from 'react';
 
 function Controls(props) {
-  const { setCurrentFilter, clearTasks } = props;
+  const { setCurrentFilter, clearTasks, clearCurrentSearch } = props;
   const [filterButtons, ,] = useState(['all', 'active', 'done']);
 
   const handleFilterButtonClick = ({ target: { value } }) => {
+    clearCurrentSearch();
     setCurrentFilter(value);
   };
 

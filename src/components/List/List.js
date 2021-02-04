@@ -12,6 +12,8 @@ function List(props) {
     toggleTaskEditing,
     removeTask,
     clearTasks,
+    getMatchingTasks,
+    clearCurrentSearch,
     searchQuery,
   } = props;
   const [textareaText, setTextareaText] = useState('');
@@ -31,11 +33,11 @@ function List(props) {
     };
 
     const matchVisibleTasksToSearch = () => {
-      setVisibleTasks((prevTasks) =>
-        prevTasks.filter((prevTask) =>
-          prevTask.text.includes(searchQuery.current)
-        )
-      );
+      if (searchQuery.current) {
+        setVisibleTasks((prevTasks) =>
+          getMatchingTasks(prevTasks, searchQuery.current)
+        );
+      }
     };
 
     switch (currentFilter) {
@@ -49,9 +51,7 @@ function List(props) {
         addAllTasksToVisible();
     }
 
-    if (searchQuery.current) {
-      matchVisibleTasksToSearch();
-    }
+    matchVisibleTasksToSearch();
   };
 
   const getEmptyMessage = () => {
@@ -87,7 +87,11 @@ function List(props) {
       ) : (
         <p className="empty-message">{emptyMessage}</p>
       )}
-      <Controls setCurrentFilter={setCurrentFilter} clearTasks={clearTasks} />
+      <Controls
+        setCurrentFilter={setCurrentFilter}
+        clearTasks={clearTasks}
+        clearCurrentSearch={clearCurrentSearch}
+      />
     </Fragment>
   );
 }
