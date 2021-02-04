@@ -7,12 +7,19 @@ import List from './List/List';
 function Todo() {
   const [tasks, setTasks] = useState([]);
   const [visibleTasks, setVisibleTasks] = useState(tasks);
+  const [currentFilter, setCurrentFilter] = useState('all');
   const isAnyTaskEditing = useRef(false);
   const searchQuery = useRef('');
 
   const clearCurrentSearch = () => {
     if (searchQuery.current) {
       searchQuery.current = '';
+    }
+  };
+
+  const resetCurrentFilter = () => {
+    if (currentFilter !== 'all') {
+      setCurrentFilter('all');
     }
   };
 
@@ -25,6 +32,7 @@ function Todo() {
     };
 
     clearCurrentSearch();
+    resetCurrentFilter();
     setTasks((prevTasks) => [...prevTasks, ...[task]]);
   };
 
@@ -95,11 +103,16 @@ function Todo() {
   };
 
   const searchTasks = (inputText) => {
+    const getMatchingFromAllTasks = () => {
+      resetCurrentFilter();
+      return getMatchingTasks(tasks, inputText);
+    };
+
     if (tasks.length) {
       setVisibleTasks(() =>
         visibleTasks.length
           ? getMatchingTasks(visibleTasks, inputText)
-          : getMatchingTasks(tasks, inputText)
+          : getMatchingFromAllTasks()
       );
 
       searchQuery.current = inputText;
@@ -117,6 +130,8 @@ function Todo() {
             setTasks={setTasks}
             visibleTasks={visibleTasks}
             setVisibleTasks={setVisibleTasks}
+            currentFilter={currentFilter}
+            setCurrentFilter={setCurrentFilter}
             toggleTaskCompletion={toggleTaskCompletion}
             toggleTaskEditing={toggleTaskEditing}
             removeTask={removeTask}

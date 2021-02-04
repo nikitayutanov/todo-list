@@ -2,7 +2,12 @@ import './Controls.css';
 import { useState } from 'react';
 
 function Controls(props) {
-  const { setCurrentFilter, clearTasks, clearCurrentSearch } = props;
+  const {
+    currentFilter,
+    setCurrentFilter,
+    clearTasks,
+    clearCurrentSearch,
+  } = props;
   const [filterButtons, ,] = useState(['all', 'active', 'done']);
 
   const handleFilterButtonClick = ({ target: { value } }) => {
@@ -30,7 +35,7 @@ function Controls(props) {
               className="filter-button__radio"
               id={`filter-button--${filterButton}`}
               value={filterButton}
-              defaultChecked={index === 0 ? true : false}
+              checked={filterButton === currentFilter ? true : false}
               onChange={handleFilterButtonClick}
             />
           </div>

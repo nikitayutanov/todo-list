@@ -8,6 +8,8 @@ function List(props) {
     tasks,
     visibleTasks,
     setVisibleTasks,
+    currentFilter,
+    setCurrentFilter,
     toggleTaskCompletion,
     toggleTaskEditing,
     removeTask,
@@ -17,7 +19,6 @@ function List(props) {
     searchQuery,
   } = props;
   const [textareaText, setTextareaText] = useState('');
-  const [currentFilter, setCurrentFilter] = useState('all');
 
   const addTasksToVisible = () => {
     const addAllTasksToVisible = () => {
@@ -61,7 +62,7 @@ function List(props) {
       case 'done':
         return "There's no completed tasks.";
       default:
-        return 'Oops..';
+        return 'No tasks matching your search.';
     }
   };
 
@@ -87,6 +88,7 @@ function List(props) {
         <p className="empty-message">{getEmptyMessage()}</p>
       )}
       <Controls
+        currentFilter={currentFilter}
         setCurrentFilter={setCurrentFilter}
         clearTasks={clearTasks}
         clearCurrentSearch={clearCurrentSearch}
