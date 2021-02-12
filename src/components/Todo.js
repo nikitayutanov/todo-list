@@ -6,8 +6,6 @@ import List from './List/List';
 
 function Todo() {
   const [tasks, setTasks] = useState([]);
-  const [visibleTasks, setVisibleTasks] = useState(tasks);
-  const [currentFilter, setCurrentFilter] = useState('all');
   const isAnyTaskEditing = useRef(false);
   const searchQuery = useRef('');
 
@@ -17,11 +15,11 @@ function Todo() {
     }
   };
 
-  const resetCurrentFilter = () => {
-    if (currentFilter !== 'all') {
-      setCurrentFilter('all');
-    }
-  };
+  // const resetCurrentFilter = () => {
+  //   if (currentFilter !== 'all') {
+  //     setCurrentFilter('all');
+  //   }
+  // };
 
   const addTask = (inputText) => {
     const task = {
@@ -32,7 +30,7 @@ function Todo() {
     };
 
     clearCurrentSearch();
-    resetCurrentFilter();
+    // resetCurrentFilter();
     setTasks((prevTasks) => [...prevTasks, ...[task]]);
   };
 
@@ -98,25 +96,25 @@ function Todo() {
     }
   };
 
-  const getMatchingTasks = (tasks, searchQuery) => {
-    return tasks.filter((task) => task.text.includes(searchQuery));
-  };
+  // const getMatchingTasks = (tasks, searchQuery) => {
+  //   return tasks.filter((task) => task.text.includes(searchQuery));
+  // };
 
   const searchTasks = (inputText) => {
-    const getMatchingFromAllTasks = () => {
-      resetCurrentFilter();
-      return getMatchingTasks(tasks, inputText);
-    };
+    // const getMatchingFromAllTasks = () => {
+    //   resetCurrentFilter();
+    //   return getMatchingTasks(tasks, inputText);
+    // };
 
-    if (tasks.length) {
-      setVisibleTasks(() =>
-        visibleTasks.length
-          ? getMatchingTasks(visibleTasks, inputText)
-          : getMatchingFromAllTasks()
-      );
+    // if (tasks.length) {
+    //   setVisibleTasks(() =>
+    //     visibleTasks.length
+    //       ? getMatchingTasks(visibleTasks, inputText)
+    //       : getMatchingFromAllTasks()
+    //   );
 
-      searchQuery.current = inputText;
-    }
+    //   searchQuery.current = inputText;
+    // }
   };
 
   return (
@@ -128,15 +126,10 @@ function Todo() {
           <List
             tasks={tasks}
             setTasks={setTasks}
-            visibleTasks={visibleTasks}
-            setVisibleTasks={setVisibleTasks}
-            currentFilter={currentFilter}
-            setCurrentFilter={setCurrentFilter}
             toggleTaskCompletion={toggleTaskCompletion}
             toggleTaskEditing={toggleTaskEditing}
             removeTask={removeTask}
             clearTasks={clearTasks}
-            getMatchingTasks={getMatchingTasks}
             clearCurrentSearch={clearCurrentSearch}
             searchQuery={searchQuery}
           />

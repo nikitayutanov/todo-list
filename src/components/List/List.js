@@ -1,61 +1,42 @@
 import './List.css';
-import { Fragment, useState, useLayoutEffect } from 'react';
+import { Fragment, useState } from 'react';
 import Task from '../Task/Task';
 import Controls from '../Controls/Controls';
 
 function List(props) {
   const {
     tasks,
-    visibleTasks,
-    setVisibleTasks,
-    currentFilter,
-    setCurrentFilter,
     toggleTaskCompletion,
     toggleTaskEditing,
     removeTask,
     clearTasks,
-    getMatchingTasks,
     clearCurrentSearch,
-    searchQuery,
   } = props;
+  const [filterButtons, setFilterButtons] = useState([
+    { text: 'all', isChecked: true },
+    { text: 'active', isChecked: false },
+    { text: 'done', isChecked: false },
+  ]);
   const [textareaText, setTextareaText] = useState('');
 
-  const addTasksToVisible = () => {
-    const addAllTasksToVisible = () => {
-      setVisibleTasks(tasks);
-    };
-
-    const addActiveTasksToVisible = () => {
-      setVisibleTasks(tasks.filter((task) => !task.isCompleted));
-    };
-
-    const addCompletedTasksToVisible = () => {
-      setVisibleTasks(tasks.filter((task) => task.isCompleted));
-    };
-
-    const matchVisibleTasksToSearch = () => {
-      if (searchQuery.current) {
-        setVisibleTasks((prevTasks) =>
-          getMatchingTasks(prevTasks, searchQuery.current)
-        );
-      }
-    };
+  const getVisibleTasks = () => {
+    const currentFilter = filterButtons.filter((button) => button.isChecked)[0]
+      .text;
 
     switch (currentFilter) {
       case 'active':
-        addActiveTasksToVisible();
-        break;
+        return tasks.filter((task) => !task.isCompleted);
       case 'done':
-        addCompletedTasksToVisible();
-        break;
+        return tasks.filter((task) => task.isCompleted);
       default:
-        addAllTasksToVisible();
+        return tasks;
     }
-
-    matchVisibleTasksToSearch();
   };
 
   const getEmptyMessage = () => {
+    const currentFilter = filterButtons.filter((button) => button.isChecked)[0]
+      .text;
+
     switch (currentFilter) {
       case 'active':
         return "There's no active tasks.";
@@ -66,13 +47,11 @@ function List(props) {
     }
   };
 
-  useLayoutEffect(addTasksToVisible, [tasks, currentFilter]);
-
   return (
     <Fragment>
-      {visibleTasks.length ? (
+      {getVisibleTasks().length ? (
         <ul className="tasks">
-          {visibleTasks.map((task) => (
+          {getVisibleTasks().map((task) => (
             <Task
               key={task.id}
               task={task}
@@ -88,8 +67,8 @@ function List(props) {
         <p className="empty-message">{getEmptyMessage()}</p>
       )}
       <Controls
-        currentFilter={currentFilter}
-        setCurrentFilter={setCurrentFilter}
+        filterButtons={filterButtons}
+        setFilterButtons={setFilterButtons}
         clearTasks={clearTasks}
         clearCurrentSearch={clearCurrentSearch}
       />
