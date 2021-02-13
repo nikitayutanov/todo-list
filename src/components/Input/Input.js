@@ -33,10 +33,7 @@ function Input(props) {
 
   return (
     <section className="form-section">
-      <form
-        className="form"
-        onSubmit={handleButtonClick}
-      >
+      <form className="form" onSubmit={handleButtonClick}>
         <input
           type="text"
           className="form__input"

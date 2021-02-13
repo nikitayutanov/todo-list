@@ -6,37 +6,37 @@ import Controls from '../Controls/Controls';
 function List(props) {
   const {
     tasks,
+    searchQuery,
+    filterButtons,
+    setFilterButtons,
+    filteredTasks,
+    currentFilter,
     toggleTaskCompletion,
     toggleTaskEditing,
     removeTask,
     clearTasks,
     clearCurrentSearch,
   } = props;
-  const [filterButtons, setFilterButtons] = useState([
-    { text: 'all', isChecked: true },
-    { text: 'active', isChecked: false },
-    { text: 'done', isChecked: false },
-  ]);
+
   const [textareaText, setTextareaText] = useState('');
 
   const getVisibleTasks = () => {
-    const currentFilter = filterButtons.filter((button) => button.isChecked)[0]
-      .text;
+    const getSearchedTasks = (tasksToSearch = tasks) => {
+      return tasksToSearch.filter((task) => task.text.includes(searchQuery));
+    };
 
-    switch (currentFilter) {
-      case 'active':
-        return tasks.filter((task) => !task.isCompleted);
-      case 'done':
-        return tasks.filter((task) => task.isCompleted);
-      default:
-        return tasks;
+    if (searchQuery) {
+      const searchedTasks = filteredTasks.length
+        ? getSearchedTasks(filteredTasks)
+        : getSearchedTasks();
+
+      return searchedTasks;
     }
+
+    return filteredTasks;
   };
 
   const getEmptyMessage = () => {
-    const currentFilter = filterButtons.filter((button) => button.isChecked)[0]
-      .text;
-
     switch (currentFilter) {
       case 'active':
         return "There's no active tasks.";
@@ -47,11 +47,13 @@ function List(props) {
     }
   };
 
+  const visibleTasks = getVisibleTasks();
+
   return (
     <Fragment>
-      {getVisibleTasks().length ? (
+      {visibleTasks.length ? (
         <ul className="tasks">
-          {getVisibleTasks().map((task) => (
+          {visibleTasks.map((task) => (
             <Task
               key={task.id}
               task={task}

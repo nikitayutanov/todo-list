@@ -4,22 +4,32 @@ import Heading from './Heading/Heading';
 import Input from './Input/Input';
 import List from './List/List';
 
+const initFilterButtons = [
+  { text: 'all', isChecked: true },
+  { text: 'active', isChecked: false },
+  { text: 'done', isChecked: false },
+];
+
 function Todo() {
   const [tasks, setTasks] = useState([]);
+  const [filterButtons, setFilterButtons] = useState(initFilterButtons);
+  const [searchQuery, setSearchQuery] = useState('');
+
   const isAnyTaskEditing = useRef(false);
-  const searchQuery = useRef('');
+
+  const currentFilter = filterButtons.find((button) => button.isChecked).text;
 
   const clearCurrentSearch = () => {
-    if (searchQuery.current) {
-      searchQuery.current = '';
+    if (searchQuery) {
+      setSearchQuery('');
     }
   };
 
-  // const resetCurrentFilter = () => {
-  //   if (currentFilter !== 'all') {
-  //     setCurrentFilter('all');
-  //   }
-  // };
+  const resetCurrentFilter = () => {
+    if (currentFilter !== 'all') {
+      setFilterButtons(initFilterButtons);
+    }
+  };
 
   const addTask = (inputText) => {
     const task = {
@@ -30,7 +40,7 @@ function Todo() {
     };
 
     clearCurrentSearch();
-    // resetCurrentFilter();
+    resetCurrentFilter();
     setTasks((prevTasks) => [...prevTasks, ...[task]]);
   };
 
@@ -96,25 +106,25 @@ function Todo() {
     }
   };
 
-  // const getMatchingTasks = (tasks, searchQuery) => {
-  //   return tasks.filter((task) => task.text.includes(searchQuery));
-  // };
+  const getFilteredTasks = () => {
+    switch (currentFilter) {
+      case 'active':
+        return tasks.filter((task) => !task.isCompleted);
+      case 'done':
+        return tasks.filter((task) => task.isCompleted);
+      default:
+        return tasks;
+    }
+  };
+
+  const filteredTasks = getFilteredTasks();
 
   const searchTasks = (inputText) => {
-    // const getMatchingFromAllTasks = () => {
-    //   resetCurrentFilter();
-    //   return getMatchingTasks(tasks, inputText);
-    // };
+    if (!filteredTasks.length) {
+      resetCurrentFilter();
+    }
 
-    // if (tasks.length) {
-    //   setVisibleTasks(() =>
-    //     visibleTasks.length
-    //       ? getMatchingTasks(visibleTasks, inputText)
-    //       : getMatchingFromAllTasks()
-    //   );
-
-    //   searchQuery.current = inputText;
-    // }
+    setSearchQuery(inputText);
   };
 
   return (
@@ -125,7 +135,10 @@ function Todo() {
         {tasks.length ? (
           <List
             tasks={tasks}
-            setTasks={setTasks}
+            filterButtons={filterButtons}
+            setFilterButtons={setFilterButtons}
+            filteredTasks={filteredTasks}
+            currentFilter={currentFilter}
             toggleTaskCompletion={toggleTaskCompletion}
             toggleTaskEditing={toggleTaskEditing}
             removeTask={removeTask}
