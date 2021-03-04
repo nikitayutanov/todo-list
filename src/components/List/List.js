@@ -7,10 +7,9 @@ function List(props) {
   const {
     tasks,
     searchQuery,
-    filterButtons,
-    setFilterButtons,
-    filteredTasks,
     currentFilter,
+    setCurrentFilter,
+    filteredTasks,
     toggleTaskCompletion,
     toggleTaskEditing,
     removeTask,
@@ -69,8 +68,8 @@ function List(props) {
         <p className="empty-message">{getEmptyMessage()}</p>
       )}
       <Controls
-        filterButtons={filterButtons}
-        setFilterButtons={setFilterButtons}
+        currentFilter={currentFilter}
+        setCurrentFilter={setCurrentFilter}
         clearTasks={clearTasks}
         clearCurrentSearch={clearCurrentSearch}
       />

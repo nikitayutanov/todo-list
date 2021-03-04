@@ -4,20 +4,12 @@ import Heading from './Heading/Heading';
 import Input from './Input/Input';
 import List from './List/List';
 
-const initFilterButtons = [
-  { text: 'all', isChecked: true },
-  { text: 'active', isChecked: false },
-  { text: 'done', isChecked: false },
-];
-
 function Todo() {
   const [tasks, setTasks] = useState([]);
-  const [filterButtons, setFilterButtons] = useState(initFilterButtons);
+  const [currentFilter, setCurrentFilter] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
 
   const isAnyTaskEditing = useRef(false);
-
-  const currentFilter = filterButtons.find((button) => button.isChecked).text;
 
   const clearCurrentSearch = () => {
     if (searchQuery) {
@@ -27,7 +19,7 @@ function Todo() {
 
   const resetCurrentFilter = () => {
     if (currentFilter !== 'all') {
-      setFilterButtons(initFilterButtons);
+      setCurrentFilter('all');
     }
   };
 
@@ -135,10 +127,9 @@ function Todo() {
         {tasks.length ? (
           <List
             tasks={tasks}
-            filterButtons={filterButtons}
-            setFilterButtons={setFilterButtons}
-            filteredTasks={filteredTasks}
             currentFilter={currentFilter}
+            setCurrentFilter={setCurrentFilter}
+            filteredTasks={filteredTasks}
             toggleTaskCompletion={toggleTaskCompletion}
             toggleTaskEditing={toggleTaskEditing}
             removeTask={removeTask}

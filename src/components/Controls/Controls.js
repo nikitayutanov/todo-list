@@ -1,22 +1,18 @@
 import './Controls.css';
 
+const filterButtons = ['all', 'active', 'done'];
+
 function Controls(props) {
   const {
-    filterButtons,
-    setFilterButtons,
+    currentFilter,
+    setCurrentFilter,
     clearTasks,
     clearCurrentSearch,
   } = props;
 
   const handleFilterButtonClick = ({ target: { value } }) => {
     clearCurrentSearch();
-    setFilterButtons((prevButtons) =>
-      prevButtons.map((prevButton) =>
-        prevButton.text === value
-          ? { ...prevButton, isChecked: true }
-          : { ...prevButton, isChecked: false }
-      )
-    );
+    setCurrentFilter(value);
   };
 
   return (
@@ -29,17 +25,17 @@ function Controls(props) {
           <div className="filter-button" key={index}>
             <label
               className="filter-button__label"
-              htmlFor={`filter-button--${filterButton.text}`}
+              htmlFor={`filter-button--${filterButton}`}
             >
-              {filterButton.text}
+              {filterButton}
             </label>
             <input
               type="radio"
               name="filter-buttons"
               className="filter-button__radio"
-              id={`filter-button--${filterButton.text}`}
-              value={filterButton.text}
-              checked={filterButton.isChecked}
+              id={`filter-button--${filterButton}`}
+              value={filterButton}
+              checked={filterButton === currentFilter}
               onChange={handleFilterButtonClick}
             />
           </div>
