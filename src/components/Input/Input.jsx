@@ -1,10 +1,29 @@
 import './Input.css';
+import * as actions from '../../actions/actions';
+import * as selectors from '../../selectors';
 import { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 
-function Input(props) {
-  const { addTask, searchTasks } = props;
+const {
+  addTask,
+  clearCurrentSearch,
+  resetCurrentFilter,
+  setSearchQuery,
+} = actions;
+
+const {
+  selectFilteredTasks,
+  selectCurrentFilter,
+  selectSearchQuery,
+} = selectors;
+
+function Input() {
   const [inputText, setInputText] = useState('');
   const [inputMode, setInputMode] = useState('add');
+  const filteredTasks = useSelector(selectFilteredTasks);
+  const currentFilter = useSelector(selectCurrentFilter);
+  const searchQuery = useSelector(selectSearchQuery);
+  const dispatch = useDispatch();
 
   const handleInputChange = ({ target: { value } }) => {
     setInputText(value);
@@ -19,13 +38,28 @@ function Input(props) {
 
     if (inputText.trim()) {
       switch (inputMode) {
-        case 'add':
-          addTask(inputText);
+        case 'add': {
+          if (searchQuery) {
+            dispatch(clearCurrentSearch());
+          }
+          if (currentFilter !== 'all') {
+            dispatch(resetCurrentFilter());
+          }
+
+          dispatch(addTask(inputText));
           setInputText('');
           break;
-        case 'search':
-          searchTasks(inputText);
+        }
+
+        case 'search': {
+          if (!filteredTasks.length && currentFilter !== 'all') {
+            dispatch(resetCurrentFilter());
+          }
+
+          dispatch(setSearchQuery(inputText));
           break;
+        }
+
         default:
       }
     }

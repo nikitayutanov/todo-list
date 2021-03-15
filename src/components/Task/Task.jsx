@@ -1,15 +1,19 @@
 import './Task.css';
-import { useLayoutEffect, useRef } from 'react';
+import * as actions from '../../actions/actions';
+import { useState, useLayoutEffect, useRef } from 'react';
+import { useDispatch } from 'react-redux';
 
-function Task(props) {
-  const {
-    task,
-    toggleTaskCompletion,
-    toggleTaskEditing,
-    removeTask,
-    textareaText,
-    setTextareaText,
-  } = props;
+const {
+  removeTask,
+  toggleTaskCompletion,
+  editTask,
+  changeTask,
+  toggleTaskEditing,
+} = actions;
+
+function Task({ task, isAnyTaskEditing }) {
+  const [textareaText, setTextareaText] = useState('');
+  const dispatch = useDispatch();
   const textareaRef = useRef(null);
 
   const resizeTextarea = () => {
@@ -28,8 +32,29 @@ function Task(props) {
     resizeTextarea();
   };
 
+  const handleCompleteButtonClick = () => {
+    dispatch(toggleTaskCompletion(task.id));
+  };
+
+  const handleDeleteButtonClick = () => {
+    dispatch(removeTask(task.id));
+
+    if (task.isEditing) {
+      dispatch(toggleTaskEditing());
+    }
+  };
+
   const handleEditButtonClick = () => {
-    toggleTaskEditing(task, textareaText, setTextareaText);
+    if (!task.isEditing && !isAnyTaskEditing) {
+      setTextareaText(task.text);
+      dispatch(editTask(task.id));
+      dispatch(toggleTaskEditing());
+    } else if (task.isEditing && textareaText.trim()) {
+      dispatch(changeTask(textareaText, task.id));
+      dispatch(toggleTaskEditing());
+      setTextareaText('');
+    }
+
     focusTextarea();
   };
 
@@ -40,7 +65,7 @@ function Task(props) {
       <input
         type="checkbox"
         className="task__checkbox"
-        onChange={() => toggleTaskCompletion(task)}
+        onChange={handleCompleteButtonClick}
         checked={task.isCompleted}
         disabled={task.isEditing}
       />
@@ -62,7 +87,7 @@ function Task(props) {
         ></button>
         <button
           className="task__button task__button--delete"
-          onClick={() => removeTask(task)}
+          onClick={handleDeleteButtonClick}
         ></button>
       </div>
     </li>

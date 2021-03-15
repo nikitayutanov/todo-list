@@ -1,29 +1,27 @@
 import './List.css';
-import { Fragment, useState } from 'react';
+import * as selectors from '../../selectors';
+import { useSelector } from 'react-redux';
 import Task from '../Task/Task';
 import Controls from '../Controls/Controls';
 
-function List(props) {
-  const {
-    tasks,
-    searchQuery,
-    currentFilter,
-    setCurrentFilter,
-    filteredTasks,
-    toggleTaskCompletion,
-    toggleTaskEditing,
-    removeTask,
-    clearTasks,
-    clearCurrentSearch,
-  } = props;
+const isAnyTaskEditingSelector = (state) => state.isAnyTaskEditing;
+const {
+  selectFilteredTasks,
+  selectCurrentFilter,
+  selectSearchQuery,
+} = selectors;
 
-  const [textareaText, setTextareaText] = useState('');
+function List({ tasks }) {
+  const filteredTasks = useSelector(selectFilteredTasks);
+  const currentFilter = useSelector(selectCurrentFilter);
+  const searchQuery = useSelector(selectSearchQuery);
+  const isAnyTaskEditing = useSelector(isAnyTaskEditingSelector);
+
+  const getSearchedTasks = (tasksToSearch = tasks) => {
+    return tasksToSearch.filter((task) => task.text.includes(searchQuery));
+  };
 
   const getVisibleTasks = () => {
-    const getSearchedTasks = (tasksToSearch = tasks) => {
-      return tasksToSearch.filter((task) => task.text.includes(searchQuery));
-    };
-
     if (searchQuery) {
       const searchedTasks = filteredTasks.length
         ? getSearchedTasks(filteredTasks)
@@ -49,31 +47,22 @@ function List(props) {
   const visibleTasks = getVisibleTasks();
 
   return (
-    <Fragment>
+    <>
       {visibleTasks.length ? (
         <ul className="tasks">
           {visibleTasks.map((task) => (
             <Task
               key={task.id}
               task={task}
-              toggleTaskCompletion={toggleTaskCompletion}
-              toggleTaskEditing={toggleTaskEditing}
-              removeTask={removeTask}
-              textareaText={textareaText}
-              setTextareaText={setTextareaText}
+              isAnyTaskEditing={isAnyTaskEditing}
             />
           ))}
         </ul>
       ) : (
         <p className="empty-message">{getEmptyMessage()}</p>
       )}
-      <Controls
-        currentFilter={currentFilter}
-        setCurrentFilter={setCurrentFilter}
-        clearTasks={clearTasks}
-        clearCurrentSearch={clearCurrentSearch}
-      />
-    </Fragment>
+      <Controls isAnyTaskEditing={isAnyTaskEditing} />
+    </>
   );
 }
 

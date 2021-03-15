@@ -1,23 +1,40 @@
 import './Controls.css';
+import * as actions from '../../actions/actions';
+import { selectCurrentFilter, selectSearchQuery } from '../../selectors';
+import { useSelector, useDispatch } from 'react-redux';
 
 const filterButtons = ['all', 'active', 'done'];
+const {
+  clearCurrentSearch,
+  setCurrentFilter,
+  clearTasks,
+  toggleTaskEditing,
+} = actions;
 
-function Controls(props) {
-  const {
-    currentFilter,
-    setCurrentFilter,
-    clearTasks,
-    clearCurrentSearch,
-  } = props;
+function Controls({ isAnyTaskEditing }) {
+  const currentFilter = useSelector(selectCurrentFilter);
+  const searchQuery = useSelector(selectSearchQuery);
+  const dispatch = useDispatch();
+
+  const handleClearButtonClick = () => {
+    if (isAnyTaskEditing) {
+      dispatch(toggleTaskEditing());
+    }
+
+    dispatch(clearTasks());
+  };
 
   const handleFilterButtonClick = ({ target: { value } }) => {
-    clearCurrentSearch();
-    setCurrentFilter(value);
+    if (searchQuery) {
+      dispatch(clearCurrentSearch());
+    }
+
+    dispatch(setCurrentFilter(value));
   };
 
   return (
     <section className="controls">
-      <button className="clear-button" onClick={clearTasks}>
+      <button className="clear-button" onClick={handleClearButtonClick}>
         Clear
       </button>
       <div className="filter-buttons">
