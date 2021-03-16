@@ -12,6 +12,8 @@ const {
 } = actions;
 
 function Task({ task, isAnyTaskEditing }) {
+  const { text, id, isCompleted, isEditing } = task;
+
   const [textareaText, setTextareaText] = useState('');
   const dispatch = useDispatch();
   const textareaRef = useRef(null);
@@ -33,24 +35,24 @@ function Task({ task, isAnyTaskEditing }) {
   };
 
   const handleCompleteButtonClick = () => {
-    dispatch(toggleTaskCompletion(task.id));
+    dispatch(toggleTaskCompletion(id));
   };
 
   const handleDeleteButtonClick = () => {
-    dispatch(removeTask(task.id));
+    dispatch(removeTask(id));
 
-    if (task.isEditing) {
+    if (isEditing) {
       dispatch(toggleTaskEditing());
     }
   };
 
   const handleEditButtonClick = () => {
-    if (!task.isEditing && !isAnyTaskEditing) {
-      setTextareaText(task.text);
-      dispatch(editTask(task.id));
+    if (!isEditing && !isAnyTaskEditing) {
+      setTextareaText(text);
+      dispatch(editTask(id));
       dispatch(toggleTaskEditing());
-    } else if (task.isEditing && textareaText.trim()) {
-      dispatch(changeTask(textareaText, task.id));
+    } else if (isEditing && textareaText.trim()) {
+      dispatch(changeTask(textareaText, id));
       dispatch(toggleTaskEditing());
       setTextareaText('');
     }
@@ -61,29 +63,29 @@ function Task({ task, isAnyTaskEditing }) {
   useLayoutEffect(resizeTextarea, []);
 
   return (
-    <li className={task.isCompleted ? 'task task--completed' : 'task'}>
+    <li className={isCompleted ? 'task task--completed' : 'task'}>
       <input
         type="checkbox"
         className="task__checkbox"
         onChange={handleCompleteButtonClick}
-        checked={task.isCompleted}
-        disabled={task.isEditing}
+        checked={isCompleted}
+        disabled={isEditing}
       />
       <div className="task__text-wrapper">
         <textarea
           rows="1"
           className="task__text"
-          value={task.isEditing ? textareaText : task.text}
+          value={isEditing ? textareaText : text}
           ref={textareaRef}
           onChange={handleTextareaChange}
-          readOnly={!task.isEditing}
+          readOnly={!isEditing}
         ></textarea>
       </div>
       <div className="task__buttons">
         <button
           className="task__button task__button--edit"
           onClick={handleEditButtonClick}
-          disabled={task.isCompleted}
+          disabled={isCompleted}
         ></button>
         <button
           className="task__button task__button--delete"
