@@ -1,22 +1,30 @@
 import './Task.css';
 import * as actions from '../../actions/actions';
-import { useState, useLayoutEffect, useRef } from 'react';
-import { useDispatch } from 'react-redux';
+import { selectIsAnyTaskEditing } from '../../selectors';
+import { useLayoutEffect, useRef } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 
+const selectEditingTaskId = (state) => state.editingTask.id;
+const selectEditingTaskText = (state) => state.editingTask.text;
 const {
   removeTask,
   toggleTaskCompletion,
-  editTask,
   changeTask,
-  toggleTaskEditing,
+  startTaskEditing,
+  setEditingText,
+  stopTaskEditing,
 } = actions;
 
-function Task({ task, isAnyTaskEditing }) {
-  const { text, id, isCompleted, isEditing } = task;
+function Task({ task }) {
+  const { text, id, isCompleted } = task;
 
-  const [textareaText, setTextareaText] = useState('');
+  const editingTaskId = useSelector(selectEditingTaskId);
+  const editingTaskText = useSelector(selectEditingTaskText);
+  const isAnyTaskEditing = useSelector(selectIsAnyTaskEditing);
   const dispatch = useDispatch();
   const textareaRef = useRef(null);
+
+  const isTaskEditing = id === editingTaskId;
 
   const resizeTextarea = () => {
     textareaRef.current.style.height = `auto`;
@@ -30,7 +38,7 @@ function Task({ task, isAnyTaskEditing }) {
   };
 
   const handleTextareaChange = ({ target: { value } }) => {
-    setTextareaText(value);
+    dispatch(setEditingText(value));
     resizeTextarea();
   };
 
@@ -41,23 +49,19 @@ function Task({ task, isAnyTaskEditing }) {
   const handleDeleteButtonClick = () => {
     dispatch(removeTask(id));
 
-    if (isEditing) {
-      dispatch(toggleTaskEditing());
+    if (isAnyTaskEditing) {
+      dispatch(stopTaskEditing());
     }
   };
 
   const handleEditButtonClick = () => {
-    if (!isEditing && !isAnyTaskEditing) {
-      setTextareaText(text);
-      dispatch(editTask(id));
-      dispatch(toggleTaskEditing());
-    } else if (isEditing && textareaText.trim()) {
-      dispatch(changeTask(textareaText, id));
-      dispatch(toggleTaskEditing());
-      setTextareaText('');
+    if (!isAnyTaskEditing) {
+      dispatch(startTaskEditing(id, text));
+      focusTextarea();
+    } else if (isTaskEditing && editingTaskText.trim()) {
+      dispatch(changeTask(id, editingTaskText));
+      dispatch(stopTaskEditing());
     }
-
-    focusTextarea();
   };
 
   useLayoutEffect(resizeTextarea, []);
@@ -69,23 +73,23 @@ function Task({ task, isAnyTaskEditing }) {
         className="task__checkbox"
         onChange={handleCompleteButtonClick}
         checked={isCompleted}
-        disabled={isEditing}
+        disabled={isTaskEditing}
       />
       <div className="task__text-wrapper">
         <textarea
           rows="1"
           className="task__text"
-          value={isEditing ? textareaText : text}
+          value={isTaskEditing ? editingTaskText : text}
           ref={textareaRef}
           onChange={handleTextareaChange}
-          readOnly={!isEditing}
+          readOnly={!isTaskEditing}
         ></textarea>
       </div>
       <div className="task__buttons">
         <button
           className="task__button task__button--edit"
           onClick={handleEditButtonClick}
-          disabled={isCompleted}
+          disabled={isCompleted || (isAnyTaskEditing && !isTaskEditing)}
         ></button>
         <button
           className="task__button task__button--delete"

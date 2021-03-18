@@ -1,6 +1,6 @@
 import './Controls.css';
 import * as actions from '../../actions/actions';
-import { selectCurrentFilter, selectSearchQuery } from '../../selectors';
+import * as selectors from '../../selectors';
 import { useSelector, useDispatch } from 'react-redux';
 
 const filterButtons = ['all', 'active', 'done'];
@@ -8,17 +8,23 @@ const {
   clearCurrentSearch,
   setCurrentFilter,
   clearTasks,
-  toggleTaskEditing,
+  stopTaskEditing,
 } = actions;
+const {
+  selectCurrentFilter,
+  selectSearchQuery,
+  selectIsAnyTaskEditing,
+} = selectors;
 
-function Controls({ isAnyTaskEditing }) {
+function Controls() {
   const currentFilter = useSelector(selectCurrentFilter);
   const searchQuery = useSelector(selectSearchQuery);
+  const isAnyTaskEditing = useSelector(selectIsAnyTaskEditing);
   const dispatch = useDispatch();
 
   const handleClearButtonClick = () => {
     if (isAnyTaskEditing) {
-      dispatch(toggleTaskEditing());
+      dispatch(stopTaskEditing());
     }
 
     dispatch(clearTasks());

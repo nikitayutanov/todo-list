@@ -2,13 +2,13 @@ import { combineReducers } from 'redux';
 import tasksReducer from './tasks';
 import currentFilterReducer from './currentFilter';
 import searchQueryReducer from './searchQuery';
-import isAnyTaskEditingReducer from './isAnyTaskEditing';
+import editingTaskReducer from './editingTask';
 
 const rootReducer = combineReducers({
   tasks: tasksReducer,
   currentFilter: currentFilterReducer,
   searchQuery: searchQueryReducer,
-  isAnyTaskEditing: isAnyTaskEditingReducer,
+  editingTask: editingTaskReducer,
 });
 
 export default rootReducer;

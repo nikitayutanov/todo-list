@@ -4,7 +4,6 @@ const {
   ADD_TASK,
   REMOVE_TASK,
   TOGGLE_TASK_COMPLETION,
-  EDIT_TASK,
   CHANGE_TASK,
   CLEAR_TASKS,
 } = types;
@@ -14,19 +13,16 @@ const initialState = [
     text: '1',
     id: '0',
     isCompleted: false,
-    isEditing: false,
   },
   {
     text: '2',
     id: '1',
     isCompleted: false,
-    isEditing: false,
   },
   {
     text: '3',
     id: '2',
     isCompleted: false,
-    isEditing: false,
   },
 ];
 
@@ -44,7 +40,6 @@ function tasksReducer(state = initialState, action) {
           text,
           id,
           isCompleted: false,
-          isEditing: false,
         },
       ];
     }
@@ -57,17 +52,10 @@ function tasksReducer(state = initialState, action) {
         task.id === payload ? { ...task, isCompleted: !task.isCompleted } : task
       );
 
-    case EDIT_TASK:
-      return state.map((task) =>
-        task.id === payload ? { ...task, isEditing: true } : task
-      );
-
     case CHANGE_TASK: {
       const { text, id } = payload;
 
-      return state.map((task) =>
-        task.id === id ? { ...task, text, isEditing: false } : task
-      );
+      return state.map((task) => (task.id === id ? { ...task, text } : task));
     }
 
     case CLEAR_TASKS:

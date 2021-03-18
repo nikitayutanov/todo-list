@@ -13,3 +13,5 @@ export const selectFilteredTasks = (state) => {
       return tasks;
   }
 };
+
+export const selectIsAnyTaskEditing = (state) => !!state.editingTask.id;

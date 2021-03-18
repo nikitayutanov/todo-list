@@ -4,7 +4,6 @@ import { useSelector } from 'react-redux';
 import Task from '../Task/Task';
 import Controls from '../Controls/Controls';
 
-const isAnyTaskEditingSelector = (state) => state.isAnyTaskEditing;
 const {
   selectFilteredTasks,
   selectCurrentFilter,
@@ -15,7 +14,6 @@ function List({ tasks }) {
   const filteredTasks = useSelector(selectFilteredTasks);
   const currentFilter = useSelector(selectCurrentFilter);
   const searchQuery = useSelector(selectSearchQuery);
-  const isAnyTaskEditing = useSelector(isAnyTaskEditingSelector);
 
   const getSearchedTasks = (tasksToSearch = tasks) => {
     return tasksToSearch.filter((task) => task.text.includes(searchQuery));
@@ -51,17 +49,13 @@ function List({ tasks }) {
       {visibleTasks.length ? (
         <ul className="tasks">
           {visibleTasks.map((task) => (
-            <Task
-              key={task.id}
-              task={task}
-              isAnyTaskEditing={isAnyTaskEditing}
-            />
+            <Task key={task.id} task={task} />
           ))}
         </ul>
       ) : (
         <p className="empty-message">{getEmptyMessage()}</p>
       )}
-      <Controls isAnyTaskEditing={isAnyTaskEditing} />
+      <Controls />
     </>
   );
 }

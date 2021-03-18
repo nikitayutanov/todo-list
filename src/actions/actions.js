@@ -4,14 +4,15 @@ const {
   ADD_TASK,
   REMOVE_TASK,
   TOGGLE_TASK_COMPLETION,
-  EDIT_TASK,
   CHANGE_TASK,
   CLEAR_TASKS,
   SET_SEARCH_QUERY,
   CLEAR_CURRENT_SEARCH,
   SET_CURRENT_FILTER,
   RESET_CURRENT_FILTER,
-  TOGGLE_TASK_EDITING,
+  START_TASK_EDITING,
+  SET_EDITING_TEXT,
+  STOP_TASK_EDITING,
 } = types;
 
 export const addTask = (text) => {
@@ -33,14 +34,9 @@ export const toggleTaskCompletion = (id) => ({
   payload: id,
 });
 
-export const editTask = (id) => ({
-  type: EDIT_TASK,
-  payload: id,
-});
-
-export const changeTask = (text, id) => ({
+export const changeTask = (id, text) => ({
   type: CHANGE_TASK,
-  payload: { text, id },
+  payload: { id, text },
 });
 
 export const clearTasks = () => ({
@@ -65,6 +61,16 @@ export const resetCurrentFilter = () => ({
   type: RESET_CURRENT_FILTER,
 });
 
-export const toggleTaskEditing = () => ({
-  type: TOGGLE_TASK_EDITING,
+export const startTaskEditing = (id, text) => ({
+  type: START_TASK_EDITING,
+  payload: { id, text },
+});
+
+export const setEditingText = (text) => ({
+  type: SET_EDITING_TEXT,
+  payload: text,
+});
+
+export const stopTaskEditing = () => ({
+  type: STOP_TASK_EDITING,
 });
