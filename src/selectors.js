@@ -14,4 +14,6 @@ export const selectFilteredTasks = (state) => {
   }
 };
 
+export const selectEditingTaskId = (state) => state.editingTask.id;
+export const selectEditingTaskText = (state) => state.editingTask.text;
 export const selectIsAnyTaskEditing = (state) => !!state.editingTask.id;

@@ -1,11 +1,15 @@
 import './Task.css';
 import * as actions from '../../actions/actions';
-import { selectIsAnyTaskEditing } from '../../selectors';
+import * as selectors from '../../selectors';
 import { useLayoutEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-const selectEditingTaskId = (state) => state.editingTask.id;
-const selectEditingTaskText = (state) => state.editingTask.text;
+const {
+  selectEditingTaskId,
+  selectEditingTaskText,
+  selectIsAnyTaskEditing,
+} = selectors;
+
 const {
   removeTask,
   toggleTaskCompletion,

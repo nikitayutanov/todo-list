@@ -12,7 +12,7 @@ function Todo() {
   return (
     <div className="todo">
       <Heading />
-      <Input />
+      <Input tasks={tasks} />
       <section className="tasks-section">
         {tasks.length ? (
           <List tasks={tasks} />

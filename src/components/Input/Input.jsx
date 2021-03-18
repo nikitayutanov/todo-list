@@ -9,20 +9,29 @@ const {
   clearCurrentSearch,
   resetCurrentFilter,
   setSearchQuery,
+  changeTask,
+  stopTaskEditing,
 } = actions;
 
 const {
   selectFilteredTasks,
   selectCurrentFilter,
   selectSearchQuery,
+  selectEditingTaskId,
+  selectEditingTaskText,
+  selectIsAnyTaskEditing,
 } = selectors;
 
-function Input() {
+function Input({ tasks }) {
   const [inputText, setInputText] = useState('');
   const [inputMode, setInputMode] = useState('add');
+
   const filteredTasks = useSelector(selectFilteredTasks);
   const currentFilter = useSelector(selectCurrentFilter);
   const searchQuery = useSelector(selectSearchQuery);
+  const editingTaskId = useSelector(selectEditingTaskId);
+  const editingTaskText = useSelector(selectEditingTaskText);
+  const isAnyTaskEditing = useSelector(selectIsAnyTaskEditing);
   const dispatch = useDispatch();
 
   const handleInputChange = ({ target: { value } }) => {
@@ -37,6 +46,11 @@ function Input() {
     e.preventDefault();
 
     if (inputText.trim()) {
+      if (isAnyTaskEditing) {
+        dispatch(changeTask(editingTaskId, editingTaskText));
+        dispatch(stopTaskEditing());
+      }
+
       switch (inputMode) {
         case 'add': {
           if (searchQuery) {
@@ -52,11 +66,13 @@ function Input() {
         }
 
         case 'search': {
-          if (!filteredTasks.length && currentFilter !== 'all') {
-            dispatch(resetCurrentFilter());
-          }
+          if (tasks.length) {
+            if (!filteredTasks.length && currentFilter !== 'all') {
+              dispatch(resetCurrentFilter());
+            }
 
-          dispatch(setSearchQuery(inputText));
+            dispatch(setSearchQuery(inputText));
+          }
           break;
         }
 

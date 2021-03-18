@@ -4,21 +4,28 @@ import * as selectors from '../../selectors';
 import { useSelector, useDispatch } from 'react-redux';
 
 const filterButtons = ['all', 'active', 'done'];
+
 const {
   clearCurrentSearch,
   setCurrentFilter,
   clearTasks,
+  changeTask,
   stopTaskEditing,
 } = actions;
+
 const {
   selectCurrentFilter,
   selectSearchQuery,
+  selectEditingTaskId,
+  selectEditingTaskText,
   selectIsAnyTaskEditing,
 } = selectors;
 
 function Controls() {
   const currentFilter = useSelector(selectCurrentFilter);
   const searchQuery = useSelector(selectSearchQuery);
+  const editingTaskId = useSelector(selectEditingTaskId);
+  const editingTaskText = useSelector(selectEditingTaskText);
   const isAnyTaskEditing = useSelector(selectIsAnyTaskEditing);
   const dispatch = useDispatch();
 
@@ -31,6 +38,11 @@ function Controls() {
   };
 
   const handleFilterButtonClick = ({ target: { value } }) => {
+    if (isAnyTaskEditing) {
+      dispatch(changeTask(editingTaskId, editingTaskText));
+      dispatch(stopTaskEditing());
+    }
+
     if (searchQuery) {
       dispatch(clearCurrentSearch());
     }
